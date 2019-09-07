@@ -4,7 +4,8 @@
   (:import (com.google.cloud.logging LoggingOptions Logging$EntryListOption Payload$JsonPayload Payload$ProtoPayload Payload$StringPayload)
            (java.time.format DateTimeFormatter)
            (java.time Instant ZoneId)
-           (com.google.cloud.audit AuditLog)))
+           (com.google.cloud.audit AuditLog)
+           (com.google.protobuf.util JsonFormat)))
 
 (def timestamp-formatter (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:MM:ss"))
 (def system-default-zone (ZoneId/systemDefault))
@@ -42,12 +43,14 @@
            (.toString (.getServiceData audit-log))))
     (.toString payload)))
 
+(def ptofobuf-json-printer (JsonFormat/printer))
+
 (defn format-json-payload [payload]
   (let [fields-map (-> payload (.getData) (.getFieldsMap))]
     (if-let [message (or (get fields-map "message")
                          (get fields-map "MESSAGE"))]
       (.getStringValue message)
-      (.toString payload))))
+      (.print ptofobuf-json-printer (.getData payload)))))
 
 (defprotocol FormatPayload
   (format-payload [this]))
