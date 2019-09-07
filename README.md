@@ -13,8 +13,9 @@ pubsub
   -m, --print-metadata  Print metadata
 
 logs
-  -f, --filter FILTER  Log filter to apply, e.g. resource.type=gce_instance
-  -l, --labels         Print log entry labels
+  -f, --filter FILTER    Log filter to apply, e.g. resource.type=gce_instance
+  -u, --user-labels      Print user defined labels
+  -r, --resource-labels  Print resource labels
 ```
 
 ## Example:

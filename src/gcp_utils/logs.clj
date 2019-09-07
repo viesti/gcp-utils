@@ -12,7 +12,8 @@
 
 (def cli-options
   [["-f" "--filter FILTER" "Log filter to apply, e.g. resource.type=gce_instance"]
-   ["-l" "--labels" "Print log entry labels"]])
+   ["-u" "--user-labels" "Print user defined labels"]
+   ["-r" "--resource-labels" "Print resource labels"]])
 
 (defn entry-list-options [{:keys [page-size timestamp filter]}]
   (let [filter-string (cond-> (format "timestamp > \"%s\""
@@ -66,13 +67,19 @@
   (format-payload [this]
     (.getData this)))
 
-(defn print-log-entry [entry {:keys [labels]}]
+(defn format-labels-map [m]
+  (str/join ","
+            (for [e m]
+              (str (key e) "=" (val e)))))
+
+(defn print-log-entry [entry {:keys [user-labels resource-labels]}]
   (let [line (str (format-timestamp (.getTimestamp entry))
                   " "
-                  (when labels
-                    (str (str/join ","
-                                   (for [e (.getLabels entry)]
-                                     (str (key e) "=" (val e))))
+                  (when user-labels
+                    (str (format-labels-map (.getLabels entry))
+                         " "))
+                  (when resource-labels
+                    (str (format-labels-map (-> entry (.getResource) (.getLabels)))
                          " "))
                   (format-payload (.getPayload entry)))
         last-char (.charAt line (dec (.length line)))]
