@@ -16,6 +16,7 @@ logs
   -f, --filter FILTER    Log filter to apply, e.g. resource.type=gce_instance
   -u, --user-labels      Print user defined labels
   -r, --resource-labels  Print resource labels
+  -s, --start FROM       Start from the given amount in past, e.g. -s 2h => 2 hours ago. Supports: m (minutes), h (hours), d (days)
 ```
 
 ## Example:

@@ -2,8 +2,7 @@
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.string :as str])
   (:import (com.google.cloud.logging LoggingOptions Logging$EntryListOption Payload$JsonPayload Payload$ProtoPayload Payload$StringPayload)
-           (java.time.format DateTimeFormatter)
-           (java.time Instant ZoneId)
+           (java.time Instant ZoneId format.DateTimeFormatter temporal.ChronoUnit Duration)
            (com.google.cloud.audit AuditLog)
            (com.google.protobuf.util JsonFormat)))
 
@@ -13,7 +12,14 @@
 (def cli-options
   [["-f" "--filter FILTER" "Log filter to apply, e.g. resource.type=gce_instance"]
    ["-u" "--user-labels" "Print user defined labels"]
-   ["-r" "--resource-labels" "Print resource labels"]])
+   ["-r" "--resource-labels" "Print resource labels"]
+   ["-s" "--start FROM" "Start from the given amount in past, e.g. -s 2h => 2 hours ago. Supports: m (minutes), h (hours), d (days)"
+    :parse-fn #(let [[_ amount unit] (re-find #"(\d+)(m|h|d)" %)]
+                 (Duration/of (Long/parseLong amount)
+                              (case unit
+                                "m" ChronoUnit/MINUTES
+                                "h" ChronoUnit/HOURS
+                                "d" ChronoUnit/DAYS)))]])
 
 (defn entry-list-options [{:keys [page-size timestamp filter]}]
   (let [filter-string (cond-> (format "timestamp > \"%s\""
@@ -100,9 +106,10 @@
                                                                      (map (juxt make-sort-key #(.getInsertId %)))
                                                                      (.getValues page)))))
 
-(defn tail [{:keys [filter] :as opts}]
+(defn tail [{:keys [filter start] :as opts}]
   (let [page-size 100
-        start-timestamp (Instant/now)]
+        start-timestamp (cond-> (Instant/now)
+                          start (.minus start))]
     (loop [page (poll {:page-size page-size
                        :timestamp start-timestamp
                        :filter filter})
