@@ -1,6 +1,7 @@
 (ns gcp-utils.core
   (:require [clojure.tools.cli :refer [parse-opts]]
             [gcp-utils.pubsub :as pubsub]
+            [gcp-utils.logs :as logs]
             [clojure.string :as str]))
 
 (def cli-options
@@ -28,6 +29,9 @@
         (usage summary (->> [""
                              "pubsub"
                              (:summary (parse-opts args pubsub/cli-options))
+                             ""
+                             "logs"
+                             (:summary (parse-opts args logs/cli-options))
                              ""]
                             (str/join \newline)))
         (System/exit (if (and (empty? arguments) (not (:help options))) 1 0)))
@@ -39,4 +43,5 @@
         (System/exit 1)))
     (case (first arguments)
       "pubsub" (pubsub/main (rest args))
+      "logs" (logs/main (rest args))
       (println "Unknown command:" (first arguments)))))

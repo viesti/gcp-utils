@@ -1,3 +1,4 @@
-{:deps {com.google.cloud/google-cloud-pubsub {:mvn/version "1.77.0"}
+{:deps {com.google.cloud/google-cloud-pubsub {:mvn/version "1.87.0"}
+        com.google.cloud/google-cloud-logging {:mvn/version "1.87.0"}
         org.clojure/tools.cli {:mvn/version "0.4.2"}}
  :paths ["src"]}

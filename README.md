@@ -11,6 +11,10 @@ Available commands:
 pubsub
   -t, --topic TOPIC     Topic name
   -m, --print-metadata  Print metadata
+
+logs
+  -f, --filter FILTER  Log filter to apply, e.g. resource.type=gce_instance
+  -l, --labels         Print log entry labels
 ```
 
 ## Example:
