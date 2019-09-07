@@ -71,7 +71,10 @@
     (format-json-payload this))
   Payload$StringPayload
   (format-payload [this]
-    (.getData this)))
+    (.getData this))
+  nil
+  (format-payload [this]
+    ""))
 
 (defn format-labels-map [m]
   (str/join ","
