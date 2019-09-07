@@ -21,6 +21,17 @@ logs
 
 ## Examples:
 
+### Use via inline deps
+
+```clojure
+$> export GOOGLE_APPLICATION_CREDENTIALS=path/to/account.json
+$> clj -Sdeps '{:deps {gcp-utils {:git/url "https://github.com/viesti/gcp-utils" :sha "b13a92c5bdac124e224e835586166e1d6c40733c"}}}' -m gcp-utils.core -h
+Google Cloud utilities
+
+Usage: clj -m gcp-utils.core [options] <command> [command-options]
+...
+```
+
 ### Tailing Stackdriver logs
 
 ```shell
