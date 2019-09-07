@@ -24,7 +24,10 @@ logs
 ### Tailing Stackdriver logs
 
 ```shell
-$> clj -m gcp-utils.core logs --filter "resource.type=cloud_function OR resource.type=cloud_run_revision" -r
+$> export GOOGLE_APPLICATION_CREDENTIALS=path/to/account.json
+$> clj -m gcp-utils.core logs \
+       --filter "resource.type=cloud_function OR resource.type=cloud_run_revision" \
+       -r
 2019-09-07 19:09:09 location=us-central1,project_id=tiuhti,service_name=run-app,revision_name=run-app-eb822eba-f771-41eb-810f-c10b30988770,configuration_name=run-app
 2019-09-07 19:09:18 region=europe-west1,project_id=tiuhti,function_name=my-fun Function execution started
 2019-09-07 19:09:18 region=europe-west1,project_id=tiuhti,function_name=my-fun Hello from Cloud Function!
@@ -34,7 +37,8 @@ $> clj -m gcp-utils.core logs --filter "resource.type=cloud_function OR resource
 ### Tailing Pubsub topic
 
 ```shell
-$> GOOGLE_APPLICATION_CREDENTIALS=path/to/account.json clj -m gcp-utils.core pubsub tail -t input -m
+$> export GOOGLE_APPLICATION_CREDENTIALS=path/to/account.json
+$> clj -m gcp-utils.core pubsub tail -t input -m
 Created subscription projects/tiuhti/subscriptions/gcp-util-kimmoko-1563392747139
 Subscriber starting
 Tailing topic input
