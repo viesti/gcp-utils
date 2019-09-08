@@ -24,7 +24,7 @@
 (defn entry-list-options [{:keys [page-size timestamp filter]}]
   (let [filter-string (cond-> (format "timestamp > \"%s\""
                                       (.format DateTimeFormatter/ISO_INSTANT timestamp))
-                        filter (str " AND " filter))
+                        filter (str " AND (" filter ")"))
         opts [(Logging$EntryListOption/pageSize page-size)
               (Logging$EntryListOption/filter filter-string)]]
     (into-array Logging$EntryListOption opts)))
