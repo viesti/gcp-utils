@@ -25,7 +25,7 @@ logs
 
 ```clojure
 $> export GOOGLE_APPLICATION_CREDENTIALS=path/to/account.json
-$> clj -Sdeps '{:deps {gcp-utils {:git/url "https://github.com/viesti/gcp-utils" :sha "b13a92c5bdac124e224e835586166e1d6c40733c"}}}' -m gcp-utils.core -h
+$> clj -Sdeps '{:deps {gcp-utils {:git/url "https://github.com/viesti/gcp-utils" :sha "6a505cef1f680b46e0988ba632119c1480bac674"}}}' -m gcp-utils.core -h
 Google Cloud utilities
 
 Usage: clj -m gcp-utils.core [options] <command> [command-options]
